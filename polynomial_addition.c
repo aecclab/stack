@@ -10,7 +10,7 @@ struct polynomial{
 struct polynomial *phead,*qhead,*rhead;
 
 void read_polynomial(struct polynomial *poly) {
-    struct polynomial *p = phead;
+    poly = phead;
     struct polynomial *term = (struct polynomial*) malloc(sizeof(struct polynomial));
 
     int no_of_terms,coeff,exp;
@@ -25,55 +25,67 @@ void read_polynomial(struct polynomial *poly) {
 
         term->coeff = coeff;
         term->exp = exp;
-        p->nextTerm = term;
-        p=p->nextTerm;
+        poly->nextTerm = term;
+        poly=term;
     }
 }
 
 void display_polynomial(struct polynomial *poly) {
-    struct polynomial *p = phead;
+    poly = phead;
 
-    while (p!=NULL) {
-        printf("%dx^%d + ", p->coeff, p->exp);
-        p=p->nextTerm;
+    while (poly!=NULL) {
+        printf("%dx^%d + ", poly->coeff, poly->exp);
+        poly=poly->nextTerm;
     }
 }
 
-void add_polynomial(struct polynomial *p, struct polynomial *q) {
+void add_polynomial(struct polynomial *p1, struct polynomial *q1) {
     int NoOfTermsPoly1,NoOfTermsPoly2,Maxterms,i;
 
     struct polynomial *r = rhead;
-    struct polynomial *p = phead;
-    struct polynomial *q = qhead;
+    p1 = phead;
+    q1 = qhead;
 
-    struct polynomial *p = phead;
-    struct polynomial *q = qhead;
-
-    while (p!=NULL) {
+    while (p1!=NULL) {
         NoOfTermsPoly1++;
-        p=p->nextTerm;
+        p1=p1->nextTerm;
     }
-    while (q!=NULL) {
+    while (q1!=NULL) {
         NoOfTermsPoly2++;
-        q=q->nextTerm;
+        q1=q1->nextTerm;
     }
     Maxterms = NoOfTermsPoly1>NoOfTermsPoly2?NoOfTermsPoly1:NoOfTermsPoly2;
 
-    p=phead;
-    q=qhead;
+    p1=phead;
+    q1=qhead;
 
     for (i=0;i<Maxterms;i++) {
-        if (p->exp==q->exp) {
-            r->exp=p->exp;
-            r->coeff = p->coeff+q->coeff;
+        if (p1->exp==q1->exp) {
+            r->exp=p1->exp;
+            r->coeff = p1->coeff+q1->coeff;
         }
-        else if(p->exp>q->exp) {
-            r->exp=p->exp;
-            r->coeff = p->coeff;
+        else if(p1->exp>q1->exp) {
+            r->exp=p1->exp;
+            r->coeff = p1->coeff;
         }
         else {
-            r->exp=q->exp;
-            r->coeff = q->coeff;
+            r->exp=q1->exp;
+            r->coeff = q1->coeff;
         }
     }
+}
+
+void main(){
+    int i;
+    printf("enter the first polynomial\n");
+    read_polynomial(phead);
+    printf("enter the second polynomial\n");
+    read_polynomial(qhead);
+    printf("\n\nthe first polynomial is\n");
+    display_polynomial(phead);
+    printf("\nthe second polynomial is\n");
+    display_polynomial(qhead);
+    add_polynomial(phead,qhead);
+    printf("\n\nthe resultant polynomial is\n");
+    display_polynomial(rhead);
 }
